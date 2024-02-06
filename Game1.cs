@@ -106,7 +106,7 @@ public class Game1 : Game
         base.Draw(gameTime);
     }
 
-    void HandleInput()
+    void HandleInput() // I'm sure there is a much better way to handle key input but I'm too lazy to bother :)
     {
         var ks = Keyboard.GetState();
 

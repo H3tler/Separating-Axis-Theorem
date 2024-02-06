@@ -74,7 +74,7 @@ public class Box
         return new Vector2(x, y);
     }
 
-    public Vector2 GetEdge(uint Edge)
+    public Vector2 GetEdge(uint Edge) // Used it for demonstration but it doesn't contribute anything to the functionality.
     {
         if (Edge > 3) Edge = 3;
 
@@ -112,7 +112,7 @@ public class Box
         return VU;
     }
 
-    public static Vector2 ProjectOnAxis(Vector2 axis, params Vector2[] vecs)
+    public static Vector2 ProjectOnAxis(Vector2[] vecs, Vector2 axis)
     {
         float min = float.PositiveInfinity;
         float max = float.NegativeInfinity;
@@ -133,15 +133,13 @@ public class Box
 
     public static bool Collide(Box box1, Box box2)
     {
-
         Box[] arr = new Box[] {box1, box2};
 
         for (int n = 0; n < 2; n++) { // Loop over shapes.
             for (uint i = 0; i < 4; i++) { // Loop over sides.
                 uint j = (i + 1) % 4;
                 
-                //Get perpendicular vector to side.
-
+                // Get perpendicular vector to a side.
                 float sideX = -(arr[n].GetVertix(j).Y - arr[n].GetVertix(i).Y);
                 float sideY = arr[n].GetVertix(j).X - arr[n].GetVertix(i).X;
 
@@ -149,16 +147,15 @@ public class Box
 
                 sideVec.Normalize();
                 
-                Vector2 shape1Projection = ProjectOnAxis(sideVec, box1.Vertices);
-                Vector2 shape2Projection = ProjectOnAxis(sideVec, box2.Vertices);
+                // Project vertices on the axis.
+                Vector2 shape1Projection = ProjectOnAxis(box1.Vertices, sideVec);
+                Vector2 shape2Projection = ProjectOnAxis(box2.Vertices, sideVec);
 
-                if (! OverLapping(shape1Projection, shape2Projection)) return false; 
+                if (! OverLapping(shape1Projection, shape2Projection)) return false; // Check if the two projections overlap.
 
             }
         }
         
-        
-
         return true;
     }
 }
