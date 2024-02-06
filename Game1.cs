@@ -53,6 +53,11 @@ public class Game1 : Game
 
 //----------------------------------------------------------
         HandleInput();
+        box1.Color = Color.Yellow;
+
+        if (Box.Collide(box1, box2)) {
+            box1.Color = Color.Green;
+        }
 //----------------------------------------------------------
 
         base.Update(gameTime);
@@ -66,7 +71,7 @@ public class Game1 : Game
         //vec2.Normalize();
 //----------------------------------------------------------
         box1.Draw(spriteBatch, pixel);
-        //box2.Draw(spriteBatch, pixel);
+        box2.Draw(spriteBatch, pixel);
         for (uint i = 0; i < 4; i++) {
             var vec = box1.GetEdge(i);
             float ang = MathF.Atan2(vec.Y - box1.Pos.Y, vec.X - box1.Pos.X);

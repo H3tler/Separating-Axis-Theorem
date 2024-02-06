@@ -49,22 +49,7 @@ public class Box
         Vector2 TopR = new Vector2(xMax, yMin);
         Vector2 BottR = new Vector2(xMax, yMax);
         Vector2 BottL = new Vector2(xMin, yMax);
-        float distance1 = Vector2.Distance(Pos, TopL);
-        float distance2 = Vector2.Distance(Pos, TopR);
-        float distance3 = Vector2.Distance(Pos, BottR);
-        float distance4 = Vector2.Distance(Pos, BottL);
-
-        // switch (Corner) {
-        //     case 0:
-        //         return GetRotatedPoint(Rotation, distance1) + Pos;
-        //     case 1:
-        //         return GetRotatedPoint(Rotation + 90, distance2) + Pos;
-        //     case 2:
-        //         return GetRotatedPoint(Rotation + 180, distance3) + Pos;
-        //     default: 
-        //         return GetRotatedPoint(Rotation + 270, distance4) + Pos;
-        // }
-
+        
         switch (Corner) {
             case 0:
                 return Rotate(Rotation, TopL);
@@ -120,4 +105,17 @@ public class Box
         return new Vector2(x, y);
     }
 
+    public static bool Collide(Box box1, Box box2)
+    {
+        if (box1.GetVertix(0).X > box2.GetVertix(1).X)
+            return false;
+        if (box1.GetVertix(1).X < box2.GetVertix(0).X)
+            return false;
+        if (box1.GetVertix(0).Y > box2.GetVertix(2).Y)
+            return false;
+        if (box1.GetVertix(2).Y < box2.GetVertix(0).Y)
+            return false;
+
+        return true;
+    }
 }
