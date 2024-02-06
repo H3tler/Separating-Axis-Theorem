@@ -7,6 +7,7 @@ public static class Globals // Class for global methods and variables.
     public static int Height;
     public static int Width;
     public static Texture2D pixel;
+    public static SpriteFont Consolas;
 
     public static void DrawLine(SpriteBatch spritebatch, Texture2D texture, Vector2 Vec1, Vector2 Vec2, Color color, float scale)
     {

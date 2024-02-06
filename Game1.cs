@@ -2,6 +2,7 @@ global using static SATCollision.Globals;
 global using Microsoft.Xna.Framework;
 global using Microsoft.Xna.Framework.Graphics;
 global using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace SATCollision;
 
@@ -34,6 +35,7 @@ public class Game1 : Game
         pixel.SetData(new Color[] {Color.White});
         box1 = new(new(Width / 2, Height / 2), 100, 100, Color.Yellow);
         box2 = new(new(Width / 2, 100), 50, 50, Color.Blue);
+        Consolas = Content.Load<SpriteFont>("Consolas");
 //----------------------------------------------------------
 
         base.Initialize();
@@ -64,17 +66,27 @@ public class Game1 : Game
         //vec2.Normalize();
 //----------------------------------------------------------
         box1.Draw(spriteBatch, pixel);
-        box2.Draw(spriteBatch, pixel);
+        //box2.Draw(spriteBatch, pixel);
         for (uint i = 0; i < 4; i++) {
             var vec = box1.GetEdge(i);
-            var vec2 = new Vector2(vec.Y, -vec.X);
+            float ang = MathF.Atan2(vec.Y - box1.Pos.Y, vec.X - box1.Pos.X);
+            var vec2 = box1.GetRotatedPoint(ang, 10) + box1.Pos;
             DrawLine(spriteBatch, pixel, vec, vec2, Color.Red, 3f);
         }
         for (uint i = 0; i < 4; i++) {
             var vec = box1.GetVertix(i);
-            var vec2 = new Vector2(vec.Y, -vec.X);
+            float ang = MathF.Atan2(vec.Y - box1.Pos.Y, vec.X - box1.Pos.X);
+            var vec2 = box1.GetRotatedPoint(ang, 10) + box1.Pos;
             DrawLine(spriteBatch, pixel, vec, vec2, Color.Red, 3f);
         }
+
+        for (uint i = 0; i < 4; i++) {
+            var vec = box1.GetVertix(i);
+            spriteBatch.DrawString(Consolas, $"Vertex {i}: ({vec.X}, {vec.Y})", new(30,30 + (i * 50)), Color.Black);
+        }
+
+        spriteBatch.DrawString(Consolas, $"MidPoint: ({box1.Pos.X}, {box1.Pos.Y})", new(30,400), Color.Black);
+   
 //----------------------------------------------------------
         spriteBatch.End();
 
@@ -97,11 +109,11 @@ public class Game1 : Game
         if (ks.IsKeyDown(Keys.Right)) {
             box1.Pos.X++;
         }
-        if (ks.IsKeyDown(Keys.W)) {
+        if (ks.IsKeyDown(Keys.E)) {
             box1.Rotation += 0.1f;
             box1.Update();
         }
-        if (ks.IsKeyDown(Keys.S)) {
+        if (ks.IsKeyDown(Keys.Q)) {
             box1.Rotation -= 0.1f;
             box1.Update();
         }
