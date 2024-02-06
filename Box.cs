@@ -17,6 +17,9 @@ public class Box
     public float yMax {
         get {return Pos.Y + (Height / 2);}
     }
+    public Vector2[] Vertices {
+        get {return new Vector2[] {GetVertix(0), GetVertix(1), GetVertix(2), GetVertix(3)};}
+    }
     public int Height;
     public int Width;
     public Color Color;
@@ -105,16 +108,61 @@ public class Box
         return new Vector2(x, y);
     }
 
+    public static Vector2 ProjectVector(Vector2 vec, Vector2 proj)
+    {
+        float dot = Vector2.Dot(vec, proj);
+        float projMag = proj.Length();
+        Vector2 VU = (dot / (projMag * projMag)) * proj;
+
+        return VU;
+    }
+
+    public static Vector2 ProjectOnAxis(Vector2[] vecs, Vector2 axis)
+    {
+        float min = float.PositiveInfinity;
+        float max = float.NegativeInfinity;
+
+        foreach (Vector2 vert in vecs) {
+            float projection = Vector2.Dot(vert, axis);
+            if (projection < min ) min = projection;
+            if (projection > max) max = projection;
+        }
+
+        return new Vector2(min, max);
+    }
+
+    public static bool OverLapping(Vector2 vec1, Vector2 vec2)
+    {
+        return vec1.X <= vec2.Y && vec1.Y >= vec2.X;
+    }
+
     public static bool Collide(Box box1, Box box2)
     {
-        if (box1.GetVertix(0).X > box2.GetVertix(1).X)
-            return false;
-        if (box1.GetVertix(1).X < box2.GetVertix(0).X)
-            return false;
-        if (box1.GetVertix(0).Y > box2.GetVertix(2).Y)
-            return false;
-        if (box1.GetVertix(2).Y < box2.GetVertix(0).Y)
-            return false;
+
+        Box[] arr = new Box[] {box1, box2};
+
+        for (int n = 0; n < 2; n++) { // Loop over shapes.
+            for (uint i = 0; i < 4; i++) { // Loop over sides.
+                uint j = (i + 1) % 4;
+                
+                //Get perpendicular vector to side.
+
+                float sideX = -(arr[n].GetVertix(j).Y - arr[n].GetVertix(i).Y);
+                float sideY = arr[n].GetVertix(j).X - arr[n].GetVertix(i).X;
+
+                Vector2 sideVec = new(sideX, sideY);
+
+                sideVec.Normalize();
+                
+                Vector2 shape1Projection = ProjectOnAxis(box1.Vertices, sideVec);
+                Vector2 shape2Projection = ProjectOnAxis(box2.Vertices, sideVec);
+
+                if (! OverLapping(shape1Projection, shape2Projection)) return false; 
+
+            }
+        }
+        
+        
 
         return true;
     }

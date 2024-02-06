@@ -34,7 +34,7 @@ public class Game1 : Game
         pixel = new(GraphicsDevice, 1, 1);
         pixel.SetData(new Color[] {Color.White});
         box1 = new(new(Width / 2, Height / 2), 100, 100, Color.Yellow);
-        box2 = new(new(Width / 2, 100), 50, 50, Color.Blue);
+        box2 = new(new(700, 400), 50, 50, Color.Blue);
         Consolas = Content.Load<SpriteFont>("Consolas");
 //----------------------------------------------------------
 
@@ -83,6 +83,18 @@ public class Game1 : Game
             float ang = MathF.Atan2(vec.Y - box1.Pos.Y, vec.X - box1.Pos.X);
             var vec2 = box1.GetRotatedPoint(ang, 10) + box1.Pos;
             DrawLine(spriteBatch, pixel, vec, vec2, Color.Red, 3f);
+        }
+
+        for (uint i = 0; i < 4; i++) {
+            var vec = box1.GetVertix(i);
+            var vec2 = Box.ProjectOnAxis(box1.Vertices, box2.GetVertix(i));
+            DrawLine(spriteBatch, pixel, vec, vec2, Color.Blue, 3f);
+        }
+
+        for (uint i = 0; i < 4; i++) {
+            var vec = box1.GetVertix(i);
+            spriteBatch.Draw(pixel, vec, new Rectangle{Width = 5, Height = 5}, Color.Black, 
+            0f, new Vector2(5 / 2, 5/ 2), 1f, SpriteEffects.None, 0f);
         }
 
         for (uint i = 0; i < 4; i++) {
