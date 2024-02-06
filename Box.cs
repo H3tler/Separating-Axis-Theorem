@@ -112,7 +112,7 @@ public class Box
         return VU;
     }
 
-    public static Vector2 ProjectOnAxis(Vector2[] vecs, Vector2 axis)
+    public static Vector2 ProjectOnAxis(Vector2 axis, params Vector2[] vecs)
     {
         float min = float.PositiveInfinity;
         float max = float.NegativeInfinity;
@@ -149,8 +149,8 @@ public class Box
 
                 sideVec.Normalize();
                 
-                Vector2 shape1Projection = ProjectOnAxis(box1.Vertices, sideVec);
-                Vector2 shape2Projection = ProjectOnAxis(box2.Vertices, sideVec);
+                Vector2 shape1Projection = ProjectOnAxis(sideVec, box1.Vertices);
+                Vector2 shape2Projection = ProjectOnAxis(sideVec, box2.Vertices);
 
                 if (! OverLapping(shape1Projection, shape2Projection)) return false; 
 
