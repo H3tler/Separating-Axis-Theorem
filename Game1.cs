@@ -54,9 +54,11 @@ public class Game1 : Game
 //----------------------------------------------------------
         HandleInput();
         box1.Color = Color.Yellow;
+        box2.Color = Color.Blue;
 
         if (Box.Collide(box1, box2)) {
             box1.Color = Color.Green;
+            box2.Color = Color.Red;
         }
 //----------------------------------------------------------
 
@@ -72,37 +74,31 @@ public class Game1 : Game
 //----------------------------------------------------------
         box1.Draw(spriteBatch, pixel);
         box2.Draw(spriteBatch, pixel);
-        for (uint i = 0; i < 4; i++) {
-            var vec = box1.GetEdge(i);
-            float ang = MathF.Atan2(vec.Y - box1.Pos.Y, vec.X - box1.Pos.X);
-            var vec2 = box1.GetRotatedPoint(ang, 10) + box1.Pos;
-            DrawLine(spriteBatch, pixel, vec, vec2, Color.Red, 3f);
-        }
-        for (uint i = 0; i < 4; i++) {
-            var vec = box1.GetVertix(i);
-            float ang = MathF.Atan2(vec.Y - box1.Pos.Y, vec.X - box1.Pos.X);
-            var vec2 = box1.GetRotatedPoint(ang, 10) + box1.Pos;
-            DrawLine(spriteBatch, pixel, vec, vec2, Color.Red, 3f);
-        }
+        // for (uint i = 0; i < 4; i++) {
+        //     var vec = box1.GetEdge(i);
+        //     float ang = MathF.Atan2(vec.Y - box1.Pos.Y, vec.X - box1.Pos.X);
+        //     var vec2 = box1.GetRotatedPoint(ang, 10) + box1.Pos;
+        //     DrawLine(spriteBatch, pixel, vec, vec2, Color.Red, 3f);
+        // }
+        // for (uint i = 0; i < 4; i++) {
+        //     var vec = box1.GetVertix(i);
+        //     float ang = MathF.Atan2(vec.Y - box1.Pos.Y, vec.X - box1.Pos.X);
+        //     var vec2 = box1.GetRotatedPoint(ang, 10) + box1.Pos;
+        //     DrawLine(spriteBatch, pixel, vec, vec2, Color.Red, 3f);
+        // }
 
-        for (uint i = 0; i < 4; i++) {
-            var vec = box1.GetVertix(i);
-            var vec2 = Box.ProjectOnAxis(box1.Vertices, box2.GetVertix(i));
-            DrawLine(spriteBatch, pixel, vec, vec2, Color.Blue, 3f);
-        }
+        // for (uint i = 0; i < 4; i++) {
+        //     var vec = box1.GetVertix(i);
+        //     spriteBatch.Draw(pixel, vec, new Rectangle{Width = 5, Height = 5}, Color.Black, 
+        //     0f, new Vector2(5 / 2, 5/ 2), 1f, SpriteEffects.None, 0f);
+        // }
 
-        for (uint i = 0; i < 4; i++) {
-            var vec = box1.GetVertix(i);
-            spriteBatch.Draw(pixel, vec, new Rectangle{Width = 5, Height = 5}, Color.Black, 
-            0f, new Vector2(5 / 2, 5/ 2), 1f, SpriteEffects.None, 0f);
-        }
+        // for (uint i = 0; i < 4; i++) {
+        //     var vec = box1.GetVertix(i);
+        //     spriteBatch.DrawString(Consolas, $"Vertex {i}: ({vec.X}, {vec.Y})", new(30,30 + (i * 50)), Color.Black);
+        // }
 
-        for (uint i = 0; i < 4; i++) {
-            var vec = box1.GetVertix(i);
-            spriteBatch.DrawString(Consolas, $"Vertex {i}: ({vec.X}, {vec.Y})", new(30,30 + (i * 50)), Color.Black);
-        }
-
-        spriteBatch.DrawString(Consolas, $"MidPoint: ({box1.Pos.X}, {box1.Pos.Y})", new(30,400), Color.Black);
+        // spriteBatch.DrawString(Consolas, $"MidPoint: ({box1.Pos.X}, {box1.Pos.Y})", new(30,400), Color.Black);
    
 //----------------------------------------------------------
         spriteBatch.End();
@@ -126,6 +122,18 @@ public class Game1 : Game
         if (ks.IsKeyDown(Keys.Right)) {
             box1.Pos.X++;
         }
+        if (ks.IsKeyDown(Keys.W)) {
+            box2.Pos.Y--;
+        }
+        if (ks.IsKeyDown(Keys.S)) {
+            box2.Pos.Y++;
+        }
+        if (ks.IsKeyDown(Keys.A)) {
+            box2.Pos.X--;
+        }
+        if (ks.IsKeyDown(Keys.D)) {
+            box2.Pos.X++;
+        }
         if (ks.IsKeyDown(Keys.E)) {
             box1.Rotation += 0.1f;
             box1.Update();
@@ -133,6 +141,14 @@ public class Game1 : Game
         if (ks.IsKeyDown(Keys.Q)) {
             box1.Rotation -= 0.1f;
             box1.Update();
+        }
+        if (ks.IsKeyDown(Keys.Y)) {
+            box2.Rotation += 0.1f;
+            box2.Update();
+        }
+        if (ks.IsKeyDown(Keys.T)) {
+            box2.Rotation -= 0.1f;
+            box2.Update();
         }
     }
 }

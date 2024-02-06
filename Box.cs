@@ -33,11 +33,6 @@ public class Box
         Color = color;
     }
 
-    public static bool Intersected(Box box1, Box box2)
-    {
-        return true;
-    }
-
     public void Draw(SpriteBatch spriteBatch, Texture2D texture)
     {
         spriteBatch.Draw(texture, Pos, new Rectangle {Width = Width, Height = Height}, Color,
