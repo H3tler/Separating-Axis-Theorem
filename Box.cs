@@ -5,6 +5,10 @@ namespace SATCollision;
 public class Box
 {
     public Vector2 Pos;
+    public int Height;
+    public int Width;
+    public Color Color;
+    public float Rotation; 
     public float xMin {
         get {return Pos.X - (Width / 2);}
     }
@@ -19,11 +23,7 @@ public class Box
     }
     public Vector2[] Vertices {
         get {return new Vector2[] {GetVertix(0), GetVertix(1), GetVertix(2), GetVertix(3)};}
-    }
-    public int Height;
-    public int Width;
-    public Color Color;
-    public float Rotation = 0f; 
+    } 
 
     public Box(Vector2 Position, int width, int height, Color color) 
     {
@@ -31,6 +31,7 @@ public class Box
         Width = width;
         Height = height;
         Color = color;
+        Rotation = 0f;
     }
 
     public void Draw(SpriteBatch spriteBatch, Texture2D texture)
@@ -50,23 +51,17 @@ public class Box
         
         switch (Corner) {
             case 0:
-                return Rotate(Rotation, TopL);
+                return Rotate(Rotation, TopL, Pos);
             case 1:
-                return Rotate(Rotation, TopR);
+                return Rotate(Rotation, TopR, Pos);
             case 2:
-                return Rotate(Rotation, BottR);
+                return Rotate(Rotation, BottR, Pos);
             default: 
-                return Rotate(Rotation, BottL);
+                return Rotate(Rotation, BottL, Pos);
         }
     }
 
-    public void Update()
-    {
-        Pos = Rotate(Rotation, Pos);
-
-    }
-
-    public Vector2 GetRotatedPoint(float angle, float distance)
+    public static Vector2 GetRotatedPoint(float angle, float distance)
     {
         float x = MathF.Cos(angle) * distance;
         float y = MathF.Sin(angle) * distance;
@@ -85,22 +80,27 @@ public class Box
 
         switch (Edge) {
             case 0:
-                return (TopR - TopL) / 2 + TopL;
+                return GetVectorBetween(TopL, TopR);
             case 1:
-                return (BottR - TopR) / 2 + TopR;
+                return GetVectorBetween(TopR, BottR);
             case 2:
-                return (BottL - BottR) / 2 + BottR;
+                return GetVectorBetween(BottR, BottL);
             default: 
-                return (TopL - BottL) / 2 + BottL;
+                return GetVectorBetween(BottL, TopL);
         }
     }
 
-    public Vector2 Rotate(float angle, Vector2 vec)
+    public static Vector2 Rotate(float angle, Vector2 vec, Vector2 MidPoint)
     {
-        float x = ((vec.X - Pos.X) * MathF.Cos(angle)) - ((vec.Y - Pos.Y) * MathF.Sin(angle)) + Pos.X;
-        float y = ((vec.X - Pos.X) * MathF.Sin(angle)) + ((vec.Y - Pos.Y) * MathF.Cos(angle)) + Pos.Y;
+        float x = ((vec.X - MidPoint.X) * MathF.Cos(angle)) - ((vec.Y - MidPoint.Y) * MathF.Sin(angle)) + MidPoint.X;
+        float y = ((vec.X - MidPoint.X) * MathF.Sin(angle)) + ((vec.Y - MidPoint.Y) * MathF.Cos(angle)) + MidPoint.Y;
 
         return new Vector2(x, y);
+    }
+
+    public static Vector2 GetVectorBetween(Vector2 vec1, Vector2 vec2)
+    {
+        return (vec2 - vec1) / 2 + vec1;
     }
 
     public static Vector2 ProjectVector(Vector2 vec, Vector2 proj)

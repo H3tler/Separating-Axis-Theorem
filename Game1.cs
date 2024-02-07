@@ -70,7 +70,6 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         spriteBatch.Begin();  
-        //vec2.Normalize();
 //----------------------------------------------------------
         box1.Draw(spriteBatch, pixel);
         box2.Draw(spriteBatch, pixel);
@@ -136,19 +135,15 @@ public class Game1 : Game
         }
         if (ks.IsKeyDown(Keys.E)) {
             box1.Rotation += 0.1f;
-            box1.Update();
         }
         if (ks.IsKeyDown(Keys.Q)) {
             box1.Rotation -= 0.1f;
-            box1.Update();
         }
         if (ks.IsKeyDown(Keys.Y)) {
             box2.Rotation += 0.1f;
-            box2.Update();
         }
         if (ks.IsKeyDown(Keys.T)) {
             box2.Rotation -= 0.1f;
-            box2.Update();
         }
     }
 }
